@@ -9,5 +9,5 @@ import Home from './components/Home';
 export default (
 <Route component={App}>
     <Route path='/' component={Home} />
-    </Route>
+</Route>
 );
