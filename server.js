@@ -4,6 +4,10 @@
 // Babel ES6/JSX Compiler
 require('babel-register');
 
+var async = require('async');
+var request = require('request');
+var xml2js = require('xml2js');
+
 var swig  = require('swig');
 var React = require('react');
 var ReactDOM = require('react-dom/server');
@@ -15,6 +19,15 @@ var path = require('path');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
 
+var mongoose = require('mongoose');
+var Opportunity = require('./models/opportunity');
+
+var config = require('./config');
+mongoose.connect(config.database);
+mongoose.connection.on('error', function() {
+    console.info('Error: Could not connect to MongoDB. Did you forget to run `mongod`?');
+});
+
 var app = express();
 
 app.set('port', process.env.PORT || 3000);
@@ -22,6 +35,51 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
+
+
+/**
+ * POST /api/characters
+ * Adds new character to the database.
+ */
+app.post('/api/opportunities', function(req, res, next) {
+    var prospect = req.body.prospect;
+    var description = req.body.description;
+
+    async.waterfall([
+        function(callback) {
+            Opportunity.findOne({ prospect: prospect, description: description }, function(err, opportunity) {
+                if (err) return next(err);
+
+                if (opportunity) {
+                    return res.status(409).send({ message: 'Opportunity is already in the database.' });
+                }
+
+                callback(err, prospect);
+            });
+        },
+        function(prospect) {
+
+                var opportunityId = new mongoose.Types.ObjectId();
+
+                        var opportunity = new Opportunity({
+                            opportunityId: opportunityId,
+                            prospect: prospect,
+                            description: description
+                        });
+
+                        opportunity.save(function(err) {
+                            if (err) return next(err);
+                            res.send({ message: prospect + ' has been added successfully!' });
+                        });
+        }
+    ]);
+});
+
+
+
+
+
+
 
 app.use(function(req, res) {
     Router.match({ routes: routes.default, location: req.url }, function(err, redirectLocation, renderProps) {
@@ -58,5 +116,5 @@ io.sockets.on('connection', function(socket) {
 });
 
 server.listen(app.get('port'), function() {
-    console.log('Express server listening on port ' + app.get('port'));
+    console.log('Express server listening at ' + new Date().getHours() + ':' + new Date().getMinutes() + ' on port ' + app.get('port'));
 });
