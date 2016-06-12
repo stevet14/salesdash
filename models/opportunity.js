@@ -4,7 +4,6 @@
 var mongoose = require('mongoose');
 
 var opportunitySchema = new mongoose.Schema({
-    opportunityId: { type: String, unique: true, index: true },
     prospect: String,
     description: String
 });

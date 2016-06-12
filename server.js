@@ -59,10 +59,7 @@ app.post('/api/opportunities', function(req, res, next) {
         },
         function(prospect) {
 
-                var opportunityId = new mongoose.Types.ObjectId();
-
                         var opportunity = new Opportunity({
-                            opportunityId: opportunityId,
                             prospect: prospect,
                             description: description
                         });
