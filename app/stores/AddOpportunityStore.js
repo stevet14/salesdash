@@ -20,6 +20,8 @@ class AddOpportunityStore {
     onAddOpportunitySuccess(successMessage) {
         this.prospectValidationState = 'has-success';
         this.prospectHelpBlock = successMessage;
+        this.prospect='';
+        this.description='';
     }
 
     onAddOpportunityFail(errorMessage) {
