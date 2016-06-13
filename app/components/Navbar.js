@@ -91,7 +91,8 @@ render() {
             </form>
             <ul className='nav navbar-nav'>
                 <li><Link to='/'>Home</Link></li>
-                <li><Link to='/add'>Add</Link></li>
+                <li><Link to='/opportunities'>Opportunities</Link></li>
+                <li><Link to='/addOpportunity'>Add</Link></li>
             </ul>
         </div>
         </nav>

@@ -18,7 +18,7 @@ class AddOpportunityActions {
     addOpportunity(prospect, description) {
         $.ajax({
             type: 'POST',
-            url: '/api/opportunities',
+            url: '/api/opportunity',
             data: { prospect: prospect, description: description }
         })
             .done((data) => {

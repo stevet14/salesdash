@@ -38,10 +38,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 /**
- * POST /api/characters
- * Adds new character to the database.
+ * POST /api/opportunity
+ * Adds new Opportunity to the database.
  */
-app.post('/api/opportunities', function(req, res, next) {
+app.post('/api/opportunity', function(req, res, next) {
     var prospect = req.body.prospect;
     var description = req.body.description;
 
@@ -72,7 +72,19 @@ app.post('/api/opportunities', function(req, res, next) {
     ]);
 });
 
-
+/**
+ * GET /api/opportunities
+ * Returns all Opportunities in the database.
+ */
+app.get('/api/opportunities', function(req, res, next) {
+    Opportunity.find()
+        .exec(function(err, opportunities) {
+            if (err) return next(err);
+            if (opportunities.length > 0) {
+                return res.send(opportunities);
+            }
+        });
+});
 
 
 
