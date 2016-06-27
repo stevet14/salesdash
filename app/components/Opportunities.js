@@ -26,31 +26,39 @@ class Opportunities extends React.Component {
     }
 
     render() {
+
+
+        let charactersList = this.state.opportunities.map((opportunity, index)=> {
+            return (
+
+                <div key={opportunity._id} className='list-group-item animated fadeIn'>
+                    <div className='media'>
+                        <span className='position pull-left'>{index + 1}</span>
+                        <div className='pull-left thumb-lg'>
+                        </div>
+                        <div className='media-body'>
+                            <h4 className='media-heading'>
+                                <small>Prospect: <strong>{opportunity.prospect}</strong></small>
+                            </h4>
+                            <br/>
+                            <small>Description: <strong>{opportunity.description}</strong></small>
+
+                        </div>
+                    </div>
+                </div>
+            );
+        });
+
         return (
-            <div className= 'container'>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Prospect</th>
-                        <th>Description</th>
-                    </tr>
-                </thead>
-                <tbody class="table">
-                        {this.state.opportunities.map((opportunity) => {
-                            return (
-                                <div>
-                                    <tr>
-                                        <td>{opportunity.prospect}</td>
-                                        <td>{opportunity.description}</td>
-                                    </tr>
-                                </div>
-                            );
-                        })}
-                </tbody>
-            </table>
-        </div>
-);
-}
+            <div className='container'>
+                <div className='list-group'>
+                    {charactersList}
+                </div>
+            </div>
+        );
+
+
+    }
 }
 
 export default Opportunities;
